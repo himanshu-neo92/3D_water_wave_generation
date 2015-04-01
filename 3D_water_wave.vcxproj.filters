@@ -427,6 +427,24 @@
     <ClInclude Include="..\..\containers\string.h">
       <Filter>containers</Filter>
     </ClInclude>
+    <ClInclude Include="sky_box.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wave_create.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="colour_create.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="inputs.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wave_file.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\resources\mesh_builder.inl">

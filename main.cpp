@@ -8,7 +8,12 @@
 //
 
 #include "../../octet.h"
-
+#include "sky_box.h"
+#include "inputs.h"
+#include "UI.h"
+#include "wave_create.h"
+#include "colour_create.h"
+#include "wave_file.h"
 #include "water_wave.h"
 
 /// Create a box with octet

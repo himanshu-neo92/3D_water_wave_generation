@@ -215,6 +215,12 @@
     <ClInclude Include="..\..\shaders\shader.h" />
     <ClInclude Include="..\..\shaders\shaders.h" />
     <ClInclude Include="..\..\shaders\texture_shader.h" />
+    <ClInclude Include="colour_create.h" />
+    <ClInclude Include="inputs.h" />
+    <ClInclude Include="sky_box.h" />
+    <ClInclude Include="UI.h" />
+    <ClInclude Include="wave_create.h" />
+    <ClInclude Include="wave_file.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\resources\mesh_builder.inl" />
