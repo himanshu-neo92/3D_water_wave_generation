@@ -16,7 +16,7 @@ namespace octet {
       fclose(wave_Rules_w);
     }
 
-   bool getrule(int rule_number,vec2 wave_vector[],float phase[],float amplitude[],float wavetime[])
+   bool getrule(int rule_number,vec2 wave_vector[],float phase[],float amplitude[])
     {
       char str[200];
       int current_rule_number = 0;      
@@ -95,38 +95,7 @@ namespace octet {
 
           }
           initsym = fgetc(wave_Rules_r);//remove the \n
-          break;
-
-        case 'T':
-          initsym = fgetc(wave_Rules_r);//remove the :
-
-          if (current_rule_number == rule_number)
-          {
-            fscanf(wave_Rules_r, "%s", str);
-            int lenofarr = strlen(str);
-            wavetime[curr_wave]=0.0f;
-            divfac = 10.0f;
-            int i = 0;
-            for (; str[i] != '.'; i++)
-            {
-              wavetime[curr_wave] += (str[i] - 48);
-              if (str[i + 1] != '.')
-                wavetime[curr_wave] *= 10;
-            }
-            i++;
-            for (; i<lenofarr; i++)
-            {
-              wavetime[curr_wave] += (str[i] - 48) / divfac;
-              divfac *= 10.0f;
-            }            
-          }
-          else
-          {
-            fscanf(wave_Rules_r, "%s", str);
-
-          }
-          initsym = fgetc(wave_Rules_r);//remove the \n
-          break;
+          break;        
         
         case 'P':
           initsym = fgetc(wave_Rules_r);//remove the :
@@ -214,15 +183,14 @@ namespace octet {
     }
 
 
-    void putrule(vec2 wave_vector[], float phase[], float amplitude[], float wavetime[])
+    void putrule(vec2 wave_vector[], float phase[], float amplitude[])
     {
       fseek(wave_Rules_w, 0,SEEK_END);
       fprintf(wave_Rules_w, "\n");
       for (int i=0;i<8;i++)
       {
         fprintf(wave_Rules_w, "X:%f\n", wave_vector[i].x());
-        fprintf(wave_Rules_w, "Y:%f\n", wave_vector[i].y());
-        fprintf(wave_Rules_w, "T:%f\n", wavetime[i]);
+        fprintf(wave_Rules_w, "Y:%f\n", wave_vector[i].y());        
         fprintf(wave_Rules_w, "P:%f\n", phase[i]);
         fprintf(wave_Rules_w, "A:%f\n", amplitude[i]);
         fprintf(wave_Rules_w, "//");

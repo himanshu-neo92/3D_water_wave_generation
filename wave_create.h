@@ -4,9 +4,8 @@ namespace octet {
 
 #define width_image 128
 #define height_image 128
-  class wave_create : public resource {
+  class wave_create : public resource {    
     
-    const float _4pisq = 39.4784176044f;
     const float g_earth = 9.8;    
     
     float omega[8];
@@ -15,9 +14,10 @@ namespace octet {
   public :
     
 
-    vec3 wave_gen(vec3 pos, int nu_K, vec2 k_param[],float k_phi[], float wave_amp[],float timeforwave[], float time, bool &timeforwavechanged,int nu_changed , bool &k_paramchanged, int nu_k_param,float &max)
+    vec3 wave_gen(vec3 pos, vec3 &norm,bool isnorm,int nu_K, vec2 k_param[],float k_phi[], float wave_amp[], float time, bool &timeforwavechanged,int nu_changed , bool &k_paramchanged, int nu_k_param,float &max)
     {
       vec2 horplane = vec2(0,0);
+      vec2 _norm = vec2(0,0);
       float height =0.0f;
       if (timeforwavechanged)
       {
@@ -26,12 +26,12 @@ namespace octet {
                  
           for (int i=0;i<nu_K;i++)
           {                        
-            omega[i] = sqrt((_4pisq / (timeforwave[i] * timeforwave[i])));
+            omega[i] = sqrt(g_earth*k_param[i].length());
           }
         }
         else
         {
-          omega[nu_changed] = sqrt((_4pisq / (timeforwave[nu_changed] * timeforwave[nu_changed])));
+          omega[nu_changed] = sqrt(g_earth*k_param[nu_changed].length());
         }
         timeforwavechanged=false;
       }
@@ -59,10 +59,17 @@ namespace octet {
       for (int i=0;i<nu_K;i++)
       {
         height += wave_const[i] * cosf(dot(k_param[i],vec2(pos.x(),pos.z()) - omega[i]*time + k_phi[i]));
-        horplane+=  (k_param[i]/k_param[i].length())*wave_const[i] * sinf(dot(k_param[i], vec2(pos.x(), pos.z()) - omega[i] * time + k_phi[i]));        
+        horplane+=  (k_param[i]/k_param[i].length())*wave_const[i] * sinf(dot(k_param[i], vec2(pos.x(), pos.z()) - omega[i] * time + k_phi[i]));  
+        if (isnorm)
+        {
+        _norm += (k_param[i])*wave_const[i] * cosf(dot(k_param[i], vec2(pos.x(), pos.z()) - omega[i] * time + k_phi[i]));
+        }
       }
-
-
+      if (isnorm)
+      {
+      _norm.normalize();
+      norm = vec3(_norm.x(),1,_norm.y());
+      }
       return vec3(pos.x()-horplane.x(),height,pos.z()-horplane.y());    
     }
   };

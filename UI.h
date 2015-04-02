@@ -85,7 +85,7 @@ namespace octet {
       }
     }
 
-    void updateUI(int vx, int vy, int rule_number, vec2 wave_vector[], float phase[], float amplitude[], float wavetime[],int frames,int selected_param,int selected_wave)
+    void updateUI(int vx, int vy, int rule_number, vec2 wave_vector[], float phase[], float amplitude[],int frames,int selected_param,int selected_wave)
     {
       
       UI_bot->clear();
@@ -106,15 +106,13 @@ namespace octet {
         case 1: current_param = "Wave Function Y";
         break;
         case 2: current_param = "Phase Difference";
-        break;
-        case 3:current_param = "Time For Wave";
-        break;
-        case 4:current_param = "Wave Constant";
+        break;        
+        case 3:current_param = "Wave Constant";
         break;
       }
         UI_top->clear();
         UI_top->format(
-          "Current Wave : %d, Current Parameter : %s, Wave Function X : %f, Wave Function Y : %f,\n              Phase Difference : %f, Time For Wave : %f, Wave Constant : %f", selected_wave, current_param, wave_vector[selected_wave].x(), wave_vector[selected_wave].y(), phase[selected_wave], wavetime[selected_wave], amplitude[selected_wave]);
+          "Current Wave : %d, Current Parameter : %s, Wave Function X : %f, Wave Function Y : %f,\n                              Phase Difference : %f, Wave Constant : %f", selected_wave, current_param, wave_vector[selected_wave].x(), wave_vector[selected_wave].y(), phase[selected_wave], amplitude[selected_wave]);
       }
       else
       {

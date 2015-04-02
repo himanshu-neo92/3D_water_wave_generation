@@ -30,7 +30,7 @@ namespace octet {
    {
      float diff = 2*max;
 
-     colour waterlow(0, 0, 55), waterhigh(0, 0, 156); 
+     colour waterlow(0, 0, 100), waterhigh(0, 0, 200); 
      colour pxl_colour(0, 0, 0);
      pxl_colour = lerp(waterlow, waterhigh, img/diff);
      vec3 mesh_colour = vec3((float)pxl_colour.v[0] / 255.0f, (float)pxl_colour.v[1] / 255.0f, (float)pxl_colour.v[2] / 255.0f);

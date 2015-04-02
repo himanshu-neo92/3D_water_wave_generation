@@ -46,8 +46,7 @@ namespace octet {
 
     vec2 tempparam[8];
     float tempphase[8];
-    float tempwaveamp[8];
-    float temptimewave[8];
+    float tempwaveamp[8];   
 
     int currframe_nu;
     int tempframe_nu = 0;
@@ -85,12 +84,12 @@ namespace octet {
       }
       if (inputs.P_KEY())
       {  
-        file_handler.putrule(tempparam, tempphase, tempwaveamp, temptimewave);
+        file_handler.putrule(tempparam, tempphase, tempwaveamp);
         Game_UI.setup_pop_up(1);
       }
       if (inputs.R_KEY())
       {        
-        isfile_loaded = file_handler.getrule(rule_number, tempparam, tempphase, tempwaveamp, temptimewave);
+        isfile_loaded = file_handler.getrule(rule_number, tempparam, tempphase, tempwaveamp);
         if (isfile_loaded)
         {
           Game_UI.setup_pop_up(2);
@@ -114,11 +113,8 @@ namespace octet {
             paramchanged = true;
             break;
           case 2: tempphase[current_wave] += 0.5f;
-            break;
-          case 3:temptimewave[current_wave] += 0.1f;    
-            timeforwavechanged=true;
-            break;
-          case 4:tempwaveamp[current_wave] += 0.05f;    
+            break;          
+          case 3:tempwaveamp[current_wave] += 0.05f;    
             paramchanged = true;
             break;
           }
@@ -149,14 +145,8 @@ namespace octet {
             paramchanged = true;
             break;
           case 2: tempphase[current_wave]-=0.5f;
-            break;
-          case 3: if (temptimewave[current_wave]>0.2f)
-                   { 
-                  temptimewave[current_wave]-=0.1f;
-                  timeforwavechanged = true;
-                   }
-            break;
-          case 4:if (tempwaveamp[current_wave]>0.1f)
+            break;          
+          case 3:if (tempwaveamp[current_wave]>0.1f)
                   {
                   tempwaveamp[current_wave]-=0.05f;
                   paramchanged = true;
@@ -277,7 +267,7 @@ namespace octet {
       tempframe_nu = get_frame_number();
 
 
-      isfile_loaded=file_handler.getrule(0, tempparam, tempphase, tempwaveamp, temptimewave);
+      isfile_loaded=file_handler.getrule(0, tempparam, tempphase, tempwaveamp);
       
      generate_wave(0.1f,istextured,isnormal,iswireframe);
     }
@@ -298,7 +288,7 @@ namespace octet {
       inputs.mouse_control(camera);
 
       Sky_Box.DayNightCycle(app_scene);
-      Game_UI.updateUI(vx, vy, rule_number, tempparam, tempphase, tempwaveamp, temptimewave, number_of_frames, current_param, current_wave);
+      Game_UI.updateUI(vx, vy, rule_number, tempparam, tempphase, tempwaveamp, number_of_frames, current_param, current_wave);
       Game_UI.pop_up_clear();
       input_keys();
 
@@ -340,13 +330,14 @@ namespace octet {
       for (int i = 0; i < height_image; ++i) {     // z
         for (int j = 0; j < width_image; ++j) { // x 
           vec3 new_pos;
+          vec3 _norm = vec3(0,0,0);
           if (!is1st)
           {
-          new_pos = wavefnc.wave_gen(vec3(i, 0.0f, j), 8, tempparam, tempphase, tempwaveamp, temptimewave, frame, timeforwavechanged, current_wave, paramchanged, current_wave,max);
+            new_pos = wavefnc.wave_gen(vec3(i, 0.0f, j), _norm, isnormal, 8, tempparam, tempphase, tempwaveamp, frame, timeforwavechanged, current_wave, paramchanged, current_wave, max);
             }
             else
             {
-              new_pos = wavefnc.wave_gen(vec3(i, 0.0f, j), 8, tempparam, tempphase, tempwaveamp, temptimewave, frame, timeforwavechanged, -1, paramchanged, -1,max);
+              new_pos = wavefnc.wave_gen(vec3(i, 0.0f, j), _norm, isnormal, 8, tempparam, tempphase, tempwaveamp, frame, timeforwavechanged, -1, paramchanged, -1, max);
               is1st=false;
             }
             
@@ -360,7 +351,9 @@ namespace octet {
 
             vtx->pos = vec3p(new_pos);
             if (isnormal)
-            {vtx->nor = vec3p(new_pos);}//making normals 
+            {
+              vtx->nor = vec3p(_norm);
+            }
             else
             {vtx->nor = vec3p(vec3(0,0,0));}
             vtx++;           
